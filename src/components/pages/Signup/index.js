@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { registerWithEmailAndPassword } from '~/firebase';
 import classNames from 'classnames/bind';
 
-import ErrorNofication from '~/components/ErrorNofication';
+import ErrorNofication from '~/components/common/ErrorNofication';
 import styles from './Signup.module.scss';
 
 const cx = classNames.bind(styles);

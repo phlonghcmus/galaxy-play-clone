@@ -1,0 +1,71 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  section {
+    width: var(--default-layout-header-width);
+  }
+}
+.welcome {
+  display: flex;
+  align-items: center;
+  min-height: 300px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: linear-gradient(
+      to right,
+      rgba(3, 37, 65, 0.8) 0%,
+      rgba(3, 37, 65, 0) 100%
+    ),
+    url('https://www.themoviedb.org/t/p/w1920_and_h600_multi_faces_filter(duotone,00192f,00baff)/kSNojkWwSZWsYv0Xj1gcq88okzY.jpg');
+}
+.wrapp {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  padding: 0 var(--padding-page);
+  h1 {
+    font-size: 5.2rem;
+    color: white;
+    line-height: 1;
+  }
+  h2 {
+    font-weight: 600;
+    font-size: 3.2rem;
+    color: white;
+    line-height: 1;
+  }
+}
+.search {
+  display: flex;
+  margin-top: 48px;
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+  input {
+    font-size: 1.6rem;
+    width: 100%;
+    padding: 14px 16px;
+  }
+}
+.search-btn {
+  font-size: 1.4rem;
+  font-weight: 700;
+  position: absolute;
+  color: white;
+  height: 100%;
+  right: 0;
+  padding: 0 28px;
+  border-radius: 24px;
+  background: linear-gradient(
+    to right,
+    rgba(30, 213, 169, 1) 0%,
+    rgba(1, 180, 228, 1) 100%
+  );
+  &:hover {
+    color: black;
+  }
+}

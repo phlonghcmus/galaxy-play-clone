@@ -1,7 +1,6 @@
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames/bind';
-import { useEffect } from 'react';
 
 import styles from './ErrorNofication.module.scss';
 

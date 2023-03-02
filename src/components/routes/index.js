@@ -1,10 +1,9 @@
-import Home from '~/pages/Home';
-import Login from '~/pages/Login';
-import Movie from '~/pages/Movie';
-import Profile from '~/pages/Profile';
-import Signup from '~/pages/Signup';
-// import SignupFormik from '~/components/SignupFormik';
-import Tvshow from '~/pages/Tvshow';
+import Home from '../pages/Home';
+import Login from '../pages/Login';
+import Movie from '../pages/Movie';
+import Profile from '../pages/Profile';
+import Signup from '../pages/Signup';
+import Tvshow from '../pages/Tvshow';
 
 const routes = [
   { path: '/', component: Home },

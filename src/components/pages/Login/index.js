@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import { useState } from 'react';
-import ErrorNofication from '~/components/ErrorNofication';
+import ErrorNofication from '~/components/common/ErrorNofication';
 import { signInWithGoogle, logInWithEmailAndPassword } from '~/firebase';
 
 import styles from './Login.module.scss';

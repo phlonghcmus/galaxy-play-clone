@@ -11,18 +11,29 @@ import { useState, useRef, useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
 import images from '~/assets/images';
-import WrapperDropdownNav from '~/components/WrapperDropdownNav';
+import WrapperDropdownNav from '~/components/common/WrapperDropdownNav';
 import styles from './Header.module.scss';
 import { auth, logout } from '~/firebase';
 const cx = classNames.bind(styles);
 function Header() {
   const [searchInput, setSearchInput] = useState('');
   const [showSearchInput, setShowSearchInput] = useState(false);
+  const [searchTrending, setSearchTrending] = useState([]);
   const searchInputRef = useRef(null);
   const [user, loading, error] = useAuthState(auth);
   useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(
+        'https://api.themoviedb.org/3/trending/all/day?api_key=41d8502e79098c9f163a19bab0e8599f'
+      );
+      const data = await response.json();
+      setSearchTrending(data.results.slice(0, 10));
+    }
     if (searchInputRef.current != null) {
       searchInputRef.current.focus();
+    }
+    if (showSearchInput) {
+      fetchData();
     }
   }, [showSearchInput]);
 
@@ -58,7 +69,7 @@ function Header() {
             </div>
           </div>
           <ul>
-            <li>
+            {/* <li>
               <div className={cx('search-wrapper')}>
                 <div className={cx('search-result-inner')}>
                   <FontAwesomeIcon
@@ -68,29 +79,22 @@ function Header() {
                   <span>We Have A Ghost</span>
                 </div>
               </div>
-            </li>
-            <li>
-              <div className={cx('search-wrapper')}>
-                <div className={cx('search-result-inner')}>
-                  <FontAwesomeIcon
-                    className={cx('search-result-icoin')}
-                    icon={faMagnifyingGlass}
-                  />
-                  <span>We Have A Ghost</span>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div className={cx('search-wrapper')}>
-                <div className={cx('search-result-inner')}>
-                  <FontAwesomeIcon
-                    className={cx('search-result-icoin')}
-                    icon={faMagnifyingGlass}
-                  />
-                  <span>We Have A Ghost</span>
-                </div>
-              </div>
-            </li>
+            </li> */}
+            {searchTrending.map((element, index) => {
+              return (
+                <li key={index}>
+                  <div className={cx('search-wrapper')}>
+                    <div className={cx('search-result-inner')}>
+                      <FontAwesomeIcon
+                        className={cx('search-result-icoin')}
+                        icon={faMagnifyingGlass}
+                      />
+                      <span>{element.title || element.name}</span>
+                    </div>
+                  </div>
+                </li>
+              );
+            })}
           </ul>
         </div>
       )}

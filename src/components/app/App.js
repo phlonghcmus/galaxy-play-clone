@@ -1,9 +1,9 @@
 import { Fragment } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import DefaultLayout from './components/Layout/DefaultLayout/DefaultLayout';
-import { routes } from './routes';
-import AuthRoute from './routes/AuthRoute';
-import NoAuthRoute from './routes/NoAuthRoute';
+import DefaultLayout from '../Layout/DefaultLayout/DefaultLayout';
+import { routes } from '../routes';
+import AuthRoute from '../routes/AuthRoute';
+import NoAuthRoute from '../routes/NoAuthRoute';
 function App() {
   return (
     <Router>
