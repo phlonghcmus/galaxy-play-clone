@@ -8,18 +8,19 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames/bind';
 import { useState, useRef, useEffect } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 import images from '~/assets/images';
 import WrapperDropdownNav from '~/components/WrapperDropdownNav';
 import styles from './Header.module.scss';
+import { auth, logout } from '~/firebase';
 const cx = classNames.bind(styles);
 function Header() {
   const [searchInput, setSearchInput] = useState('');
   const [showSearchInput, setShowSearchInput] = useState(false);
   const searchInputRef = useRef(null);
-
+  const [user, loading, error] = useAuthState(auth);
   useEffect(() => {
-    console.log(searchInputRef);
     if (searchInputRef.current != null) {
       searchInputRef.current.focus();
     }
@@ -95,7 +96,9 @@ function Header() {
       )}
       <div className={cx('inner')}>
         <div className={cx('menu')}>
-          <img className={cx('logo')} src={images.logoHeader} alt="tmdb" />
+          <a href="/" className={cx('logo')}>
+            <img src={images.logoHeader} alt="tmdb" />
+          </a>
           <ul className={cx('navigation')}>
             <li className={cx('navigation-item')}>
               <a href="/movie">Movies</a>
@@ -136,40 +139,64 @@ function Header() {
           <li>
             <div className={cx('language')}>EN</div>
           </li>
-          <li>
-            <a href="/" className={cx('login-btn')}>
-              Login
-            </a>
-          </li>
-          <li>
-            <a href="/" className={cx('join-tmdb-btn')}>
-              Join TMDB
-            </a>
-          </li>
-          {/* <li>
-            <FontAwesomeIcon className={cx('icon')} icon={faBell} />
-          </li>
-          <li>
-            <div className={cx('avatar')}>
-              <span>P</span>
-              <div className={cx('wrapper-dropdown-avatar')}>
-                <span className={cx('userid')}>phlonghcmus</span>
-                <span className={cx('viewprofile')}>View profile</span>
-                <ul className={cx('dropdown-list')}>
-                  <li className={cx('line-list')}></li>
-                  <li>Discussions</li>
-                  <li>Lists</li>
-                  <li>Ratings</li>
-                  <li>Watchlist</li>
-                  <li className={cx('line-list')}></li>
-                  <li>Edit Profile</li>
-                  <li>Settings</li>
-                  <li className={cx('line-list')}></li>
-                  <li>Logout</li>
-                </ul>
-              </div>
-            </div>
-          </li> */}
+          {!user && (
+            <>
+              <li>
+                <a href="/login" className={cx('login-btn')}>
+                  Login
+                </a>
+              </li>
+              <li>
+                <a href="/" className={cx('join-tmdb-btn')}>
+                  Join TMDB
+                </a>
+              </li>
+            </>
+          )}
+          {user && (
+            <>
+              <li>
+                <FontAwesomeIcon className={cx('icon')} icon={faBell} />
+              </li>
+              <li>
+                <div className={cx('avatar')}>
+                  <span>{user.email[0]}</span>
+                  <div className={cx('wrapper-dropdown-avatar')}>
+                    <span className={cx('userid')}>{user.email}</span>
+                    <span className={cx('viewprofile')}>View profile</span>
+                    <ul className={cx('dropdown-list')}>
+                      <li className={cx('line-list')}></li>
+                      <li>
+                        <a href="/">Discussions</a>
+                      </li>
+                      <li>
+                        <a href="/">Lists</a>
+                      </li>
+                      <li>
+                        <a href="/">Ratings</a>
+                      </li>
+                      <li>
+                        <a href="/">Watchlist</a>
+                      </li>
+                      <li className={cx('line-list')}></li>
+                      <li>
+                        <a href="/">Edit Profile</a>
+                      </li>
+                      <li>
+                        <a href="/">Settings</a>
+                      </li>
+                      <li className={cx('line-list')}></li>
+                      <li>
+                        <a href="/" onClick={logout}>
+                          Logout
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </li>
+            </>
+          )}
           {!showSearchInput && (
             <li>
               <FontAwesomeIcon

@@ -1,13 +1,19 @@
 import { Fragment } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import DefaultLayout from './components/Layout/DefaultLayout/DefaultLayout';
-import { publicRoutes } from './routes';
+import { routes } from './routes';
+import AuthRoute from './routes/AuthRoute';
+import NoAuthRoute from './routes/NoAuthRoute';
 function App() {
   return (
     <Router>
       <div className="App">
         <Routes>
-          {publicRoutes.map((route, index) => {
+          {routes.map((route, index) => {
+            let Auth = Fragment;
+            if (route.hasOwnProperty('auth'))
+              if (route.auth) Auth = AuthRoute;
+              else Auth = NoAuthRoute;
             const Page = route.component;
             let Layout = DefaultLayout;
             if (route.layout) {
@@ -20,9 +26,11 @@ function App() {
                 key={index}
                 path={route.path}
                 element={
-                  <Layout>
-                    <Page />
-                  </Layout>
+                  <Auth>
+                    <Layout>
+                      <Page />
+                    </Layout>
+                  </Auth>
                 }
               />
             );

@@ -1,13 +1,18 @@
-const { default: Home } = require('~/pages/Home');
-const { default: Movie } = require('~/pages/Movie');
-const { default: Profile } = require('~/pages/Profile');
-const { default: Tvshow } = require('~/pages/Tvshow');
+import Home from '~/pages/Home';
+import Login from '~/pages/Login';
+import Movie from '~/pages/Movie';
+import Profile from '~/pages/Profile';
+import Signup from '~/pages/Signup';
+// import SignupFormik from '~/components/SignupFormik';
+import Tvshow from '~/pages/Tvshow';
 
-const publicRoutes = [
+const routes = [
   { path: '/', component: Home },
   { path: '/movie', component: Movie },
   { path: '/tvshow', component: Tvshow },
+  { path: '/login', component: Login, auth: false },
+  { path: '/signup', component: Signup, auth: false },
+  { path: '/profile', component: Profile, auth: true },
 ];
-const privateRoutes = [{ path: '/profile', component: Profile }];
 
-export { publicRoutes, privateRoutes };
+export { routes };
