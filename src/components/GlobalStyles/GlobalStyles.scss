@@ -5,6 +5,11 @@
   --primary-color: #032541;
   --padding-page: 40px;
   --light-blue: rgb(1, 180, 228);
+  --primary-logo-color: linear-gradient(
+    to right,
+    rgba(30, 213, 169, 1) 0%,
+    rgba(1, 180, 228, 1) 100%
+  );
 }
 * {
   margin: 0px;
