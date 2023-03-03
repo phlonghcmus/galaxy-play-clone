@@ -14,6 +14,7 @@ import images from '~/assets/images';
 import WrapperDropdownNav from '~/components/common/WrapperDropdownNav';
 import styles from './Header.module.scss';
 import { auth, logout } from '~/firebase';
+import { fetchTrending } from '~/helpers/trending';
 const cx = classNames.bind(styles);
 function Header() {
   const [searchInput, setSearchInput] = useState('');
@@ -23,11 +24,8 @@ function Header() {
   const [user, loading, error] = useAuthState(auth);
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch(
-        'https://api.themoviedb.org/3/trending/all/day?api_key=41d8502e79098c9f163a19bab0e8599f'
-      );
-      const data = await response.json();
-      setSearchTrending(data.results.slice(0, 10));
+      const data = await fetchTrending('all', 'day');
+      setSearchTrending(data.data.results.slice(0, 10));
     }
     if (searchInputRef.current != null) {
       searchInputRef.current.focus();
