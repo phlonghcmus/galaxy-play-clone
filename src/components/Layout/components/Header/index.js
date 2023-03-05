@@ -14,7 +14,7 @@ import images from '~/assets/images';
 import WrapperDropdownNav from '~/components/common/WrapperDropdownNav';
 import styles from './Header.module.scss';
 import { auth, logout } from '~/firebase';
-import { fetchTrending } from '~/helpers/trending';
+import { fetchTrending } from '~/helpers/api/trending';
 const cx = classNames.bind(styles);
 function Header() {
   const [searchInput, setSearchInput] = useState('');

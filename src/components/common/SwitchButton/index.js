@@ -4,10 +4,11 @@ import styles from './SwitchButton.module.scss';
 import { useRef } from 'react';
 
 const cx = classNames.bind(styles);
-function SwitchButton({ select1, select2, linear }) {
+function SwitchButton({ select1, select2, linear, long, setState }) {
   const btn1 = useRef();
   const btn2 = useRef();
   const slide = useRef();
+
   return (
     <div className={cx('selector', { linear })}>
       <div ref={slide} className={cx('item-select')}></div>
@@ -19,6 +20,7 @@ function SwitchButton({ select1, select2, linear }) {
           btn1.current.classList.add(cx('select'));
           slide.current.style.left = '-1%';
           slide.current.style.width = '45%';
+          setState(true);
         }}
       >
         {select1}
@@ -29,8 +31,14 @@ function SwitchButton({ select1, select2, linear }) {
         onClick={() => {
           btn1.current.classList.remove(cx('select'));
           btn2.current.classList.add(cx('select'));
-          slide.current.style.left = '45%';
-          slide.current.style.width = '60%';
+          if (!long) {
+            slide.current.style.left = '45%';
+            slide.current.style.width = '60%';
+          } else {
+            slide.current.style.left = '40%';
+            slide.current.style.width = '65%';
+          }
+          setState(false);
         }}
       >
         {select2}

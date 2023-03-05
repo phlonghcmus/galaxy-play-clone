@@ -20,26 +20,27 @@
       rgba(3, 37, 65, 0) 100%
     ),
     url('https://www.themoviedb.org/t/p/w1920_and_h600_multi_faces_filter(duotone,00192f,00baff)/kSNojkWwSZWsYv0Xj1gcq88okzY.jpg');
-}
-.wrapp {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
-  padding: 0 var(--padding-page);
-  h1 {
-    font-size: 5.2rem;
-    color: white;
-    line-height: 1;
+  .wrapp {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    padding: 0 var(--padding-page);
+    h1 {
+      font-size: 5.2rem;
+      color: white;
+      line-height: 1;
+    }
+    h2 {
+      font-weight: 600;
+      font-size: 3.2rem;
+      color: white;
+      line-height: 1;
+    }
   }
-  h2 {
-    font-weight: 600;
-    font-size: 3.2rem;
-    color: white;
-    line-height: 1;
-  }
 }
+
 .search {
   display: flex;
   margin-top: 48px;
@@ -70,7 +71,7 @@
     color: black;
   }
 }
-.trending {
+.media-scroller {
   padding-top: 30px;
   display: flex;
   flex-direction: column;
@@ -87,6 +88,163 @@
     align-items: center;
     h2 {
       margin-right: 20px;
+    }
+  }
+}
+
+.trailer {
+  display: flex;
+  flex-direction: column;
+  .wrapp {
+    width: 100%;
+    padding-top: 30px;
+    .header {
+      padding: 0 var(--padding-page);
+      display: flex;
+      align-items: center;
+      color: white;
+      h2 {
+        margin-right: 20px;
+      }
+    }
+  }
+}
+.trailer-scroll {
+  padding: var(--padding-page);
+  overflow-x: scroll;
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  &::after {
+    content: '';
+    top: 0;
+    position: absolute;
+    width: 60px;
+    height: 100%;
+    right: 0;
+    background-image: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0) 0%,
+      #fff 100%
+    );
+  }
+  &.scroll::after {
+    display: none;
+  }
+  &::-webkit-scrollbar {
+    height: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #ccc;
+  }
+}
+.trailer-card {
+  min-width: 300px;
+  width: 300px;
+  max-width: 300px;
+  margin-right: 30px;
+  .card-img {
+    width: 100%;
+    position: relative;
+    display: flex;
+    border-radius: 8px;
+    overflow: hidden;
+    &:hover {
+      transform: scale(1.05);
+      transition: all 0.2 ease-in-out;
+    }
+    img {
+      width: 100%;
+    }
+    .option {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 2rem;
+      width: 2rem;
+      position: absolute;
+      top: 8px;
+      color: black;
+      right: 8px;
+      background-color: #ccc;
+      border-radius: 50%;
+      opacity: 0.8;
+      cursor: pointer;
+      &:hover {
+        background-color: aqua;
+      }
+    }
+    .play {
+      transform: translateX(50%) translateY(-50%);
+      color: white;
+      font-size: 4.8rem;
+      position: absolute;
+      top: 50%;
+      right: 50%;
+    }
+  }
+  .card-content {
+    margin-top: 10px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    h2 {
+      font-weight: 600;
+      font-size: 2.2rem;
+    }
+    h3 {
+      font-weight: 500;
+      font-size: 1.6rem;
+    }
+  }
+}
+.join {
+  color: white;
+  padding: 30px var(--padding-page);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  background-image: url('https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces_filter(duotone,190235,ad47dd)/lMnoYqPIAVL0YaLP5YjRy7iwaYv.jpg');
+  .header {
+    font-size: 2.8rem;
+  }
+  .content {
+    display: flex;
+    padding: 20px 0px;
+    div:first-child {
+      width: 65%;
+      margin-right: 40px;
+      h3 {
+        font-weight: 400;
+        font-size: 2rem;
+        i {
+          font-weight: 500;
+          opacity: 0.7;
+        }
+      }
+      button {
+        font-size: 1.6rem;
+        font-weight: 600;
+        color: white;
+        background-color: #805be7;
+        margin-top: 30px;
+        padding: 8px 16px;
+        border-radius: 8px;
+        a {
+          width: 100%;
+        }
+      }
+    }
+    div:last-child {
+      ul {
+        list-style: disc;
+        opacity: 0.8;
+        line-height: 1.2;
+      }
     }
   }
 }
