@@ -1,5 +1,6 @@
 import {
   faArrowTrendUp,
+  faBars,
   faBell,
   faMagnifyingGlass,
   faPlus,
@@ -67,17 +68,6 @@ function Header() {
             </div>
           </div>
           <ul>
-            {/* <li>
-              <div className={cx('search-wrapper')}>
-                <div className={cx('search-result-inner')}>
-                  <FontAwesomeIcon
-                    className={cx('search-result-icoin')}
-                    icon={faMagnifyingGlass}
-                  />
-                  <span>We Have A Ghost</span>
-                </div>
-              </div>
-            </li> */}
             {searchTrending.map((element, index) => {
               return (
                 <li key={index}>
@@ -102,6 +92,7 @@ function Header() {
             <img src={images.logoHeader} alt="tmdb" />
           </a>
           <ul className={cx('navigation')}>
+            <FontAwesomeIcon className={cx('navigation-bar')} icon={faBars} />
             <li className={cx('navigation-item')}>
               <a href="/movie">Movies</a>
               <WrapperDropdownNav>
@@ -134,6 +125,9 @@ function Header() {
             </li>
           </ul>
         </div>
+        <a href="/" className={cx('logo-mobile')}>
+          <img src={images.logoFooter} alt="tmdb" />
+        </a>
         <ul className={cx('action')}>
           <li>
             <FontAwesomeIcon className={cx('icon')} icon={faPlus} />

@@ -17,11 +17,24 @@
 }
 .menu {
   display: flex;
+  align-items: center;
 }
-.logo img {
-  cursor: pointer;
-  height: 20px;
-  margin: auto 0px;
+.logo-mobile {
+  height: 45px;
+  width: 55px;
+  display: none;
+  align-items: center;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  img {
+    cursor: pointer;
+    height: 20px;
+  }
+}
+.navigation-bar {
+  display: none;
 }
 .navigation {
   margin-left: 4px;
@@ -221,4 +234,37 @@
     margin-right: 8px;
     font-size: 1.2rem;
   }
+}
+/* PC */
+@media (min-width: 1023px) {
+}
+/* Tablet and Mobie*/
+@media (max-width: 1023px) {
+  .inner {
+    padding: 0;
+  }
+  .logo {
+    display: none;
+  }
+  .logo-mobile {
+    display: block;
+  }
+  .language {
+    display: none;
+  }
+  .icon {
+    display: none;
+  }
+  .login-btn {
+    display: none;
+  }
+  .join-tmdb-btn {
+    display: none;
+  }
+}
+/*Tablet*/
+@media (min-width: 740px) and (max-width: 1024px) {
+}
+/*Mobie*/
+@media (max-width: 739px) {
 }

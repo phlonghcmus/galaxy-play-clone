@@ -11,6 +11,78 @@ import { faEllipsis, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { fetchPopular } from '~/helpers/api/popular';
 
 const cx = classNames.bind(styles);
+const user = [
+  {
+    avatar:
+      'https://www.gravatar.com/avatar/66807fdf92e80a5f67f4a9d4082186e7.jpg?s=64',
+    username: 'nicos18',
+    all: 39875,
+    week: 24975,
+  },
+  {
+    avatar:
+      'https://www.gravatar.com/avatar/66807fdf92e80a5f67f4a9d4082186e7.jpg?s=64',
+    username: 'RuiZafon',
+    all: 351848,
+    week: 20122,
+  },
+  {
+    avatar:
+      'https://www.gravatar.com/avatar/3af6511cf44a709e6ae5b612903c846c.jpg?s=64',
+    username: 'heli5m',
+    all: 607516,
+    week: 10366,
+  },
+  {
+    avatar:
+      'https://www.themoviedb.org/t/p/w64_and_h64_face/5BvxGhRE7yjtbHCXgrTxPk9hBXp.jpg',
+    username: 'Sheigutn',
+    all: 442348,
+    week: 10008,
+  },
+  {
+    avatar:
+      'https://www.themoviedb.org/t/p/w64_and_h64_face/yYG7Rhn9HfFpssIMeNiDynvxC14.jpg',
+    username: 'raze464',
+    all: 524471,
+    week: 8833,
+  },
+  {
+    avatar:
+      'https://www.gravatar.com/avatar/6c61757f4a3afde4fc0a32e7380c6b73.jpg?s=64',
+    username: 'ukodus',
+    all: 28455,
+    week: 7652,
+  },
+  {
+    avatar:
+      'https://www.themoviedb.org/t/p/w64_and_h64_face/uJngdDd0WzNYGwlmBGYrDxp1akP.jpg',
+    username: 'shahdk',
+    all: 135737,
+    week: 4309,
+  },
+  {
+    avatar:
+      'https://www.themoviedb.org/t/p/w64_and_h64_face/uJngdDd0WzNYGwlmBGYrDxp1akP.jpg',
+    username: 'Magicus',
+    all: 241152,
+    week: 4177,
+  },
+  {
+    avatar:
+      'https://www.themoviedb.org/t/p/w64_and_h64_face/uJngdDd0WzNYGwlmBGYrDxp1akP.jpg',
+    username: 'mickael8411',
+    all: 10481,
+    week: 3841,
+  },
+  {
+    avatar:
+      'https://www.themoviedb.org/t/p/w64_and_h64_face/uJngdDd0WzNYGwlmBGYrDxp1akP.jpg',
+    username: 'lineker',
+    all: 1439941,
+    week: 3748,
+  },
+];
 
 function Home() {
   const [todayTrendingData, setTodayTrendingData] = useState([]);
@@ -20,6 +92,9 @@ function Home() {
   const [isTodayTrending, setIsTodayTrending] = useState(true);
   const [isOnTvTrailers, setIsOnTvTrailers] = useState(true);
   const [isOnTvPopular, setIsOnTvPopular] = useState(true);
+  const [maxAllEdits, setMaxAllEdits] = useState();
+  const [maxWeekEdits, setMaxWeekEdits] = useState();
+  const [userEdits, setUserEdits] = useState([]);
   const trailerScroll = useRef();
   useEffect(() => {
     const fetchData = async () => {
@@ -31,6 +106,21 @@ function Home() {
       setOnTvPopularData(data.data.results);
       data = await fetchPopular('movie', '1');
       setInTheatersPopularData(data.data.results);
+      setUserEdits(user);
+      const maxAllEditsVal = Math.max.apply(
+        Math,
+        user.map((item) => {
+          return item.all;
+        })
+      );
+      setMaxAllEdits(maxAllEditsVal);
+      const maxWeekEditsVal = Math.max.apply(
+        Math,
+        user.map((item) => {
+          return item.week;
+        })
+      );
+      setMaxWeekEdits(maxWeekEditsVal);
     };
     fetchData();
   }, []);
@@ -219,6 +309,50 @@ function Home() {
               </ul>
             </div>
           </div>
+        </div>
+      </section>
+      <section className={cx('leaderboard')}>
+        <div className={cx('header')}>
+          <h2>Leaderboard</h2>
+          <div>
+            <p>
+              <span className={cx('dot', 'all')}></span>All Time Edits
+            </p>
+            <p>
+              <span className={cx('dot', 'week')}></span>Edits This Week
+            </p>
+          </div>
+        </div>
+        <div className={cx('content')}>
+          <ul className={cx('data-list')}>
+            {userEdits.map((user, index) => {
+              console.log(user.all / maxAllEdits);
+              return (
+                <li key={index} className={cx('list-item')}>
+                  <img src={user.avatar} alt="avatar"></img>
+                  <div className={cx('data')}>
+                    <h3>{user.username}</h3>
+                    <div className={cx('width-wrapper')}>
+                      <div
+                        style={{ width: `${(user.all / maxAllEdits) * 100}%` }}
+                        className={cx('width', 'all')}
+                      ></div>
+                      <h4>{user.all}</h4>
+                    </div>
+                    <div className={cx('width-wrapper')}>
+                      <div
+                        style={{
+                          width: `${(user.week / maxWeekEdits) * 100}%`,
+                        }}
+                        className={cx('width', 'week')}
+                      ></div>
+                      <h4>{user.week}</h4>
+                    </div>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
         </div>
       </section>
     </div>
