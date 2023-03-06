@@ -92,3 +92,17 @@
     cursor: pointer;
   }
 }
+@media (max-width: 1023px) {
+  .inner {
+    display: block;
+    padding: 0;
+  }
+  .benefit {
+    width: 100%;
+    padding-top: var(--default-layout-header-height);
+    box-shadow: none;
+  }
+  .signup {
+    padding: var(--padding-page);
+  }
+}
