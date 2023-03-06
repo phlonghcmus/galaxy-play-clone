@@ -9,6 +9,7 @@ import MediaScroller from '~/components/common/MediaScroller';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsis, faPlay } from '@fortawesome/free-solid-svg-icons';
 import { fetchPopular } from '~/helpers/api/popular';
+import SwitchButtonMobile from '~/components/common/SwitchButtonMobile';
 
 const cx = classNames.bind(styles);
 const user = [
@@ -133,7 +134,11 @@ function Home() {
             Millions of movies, TV shows and people to discover. Explore now.
           </h2>
           <div className={cx('search')}>
-            <input placeholder="Search for a movie, tv show, person....." />
+            <input
+              className={cx('hide-on-tablet-mobile')}
+              placeholder="Search for a movie, tv show, person....."
+            />
+            <input className={cx('hide-on-pc')} placeholder="Search..." />
             <button className={cx('search-btn')}>Search</button>
           </div>
         </div>
@@ -145,6 +150,12 @@ function Home() {
             select1="Today"
             select2="This Week"
             setState={setIsTodayTrending}
+          />
+          <SwitchButtonMobile
+            select1="Today"
+            select2="This Week"
+            setState={setIsTodayTrending}
+            State={isTodayTrending}
           />
         </div>
         <MediaScroller
@@ -173,6 +184,13 @@ function Home() {
               setState={setIsOnTvTrailers}
               linear
               long
+            />
+            <SwitchButtonMobile
+              select1="On TV"
+              select2="In Theaters"
+              setState={setIsOnTvTrailers}
+              State={isOnTvTrailers}
+              linear
             />
           </div>
           <div
@@ -274,6 +292,12 @@ function Home() {
             setState={setIsOnTvPopular}
             long
           />
+          <SwitchButtonMobile
+            select1="On Tv"
+            select2="In Theaters"
+            setState={setIsOnTvPopular}
+            State={isOnTvPopular}
+          />
         </div>
         <MediaScroller
           list={isOnTvPopular ? onTvPopularData : inTheatersPopularData}
@@ -326,7 +350,6 @@ function Home() {
         <div className={cx('content')}>
           <ul className={cx('data-list')}>
             {userEdits.map((user, index) => {
-              console.log(user.all / maxAllEdits);
               return (
                 <li key={index} className={cx('list-item')}>
                   <img src={user.avatar} alt="avatar"></img>

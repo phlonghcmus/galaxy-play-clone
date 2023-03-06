@@ -10,7 +10,11 @@ function Footer() {
     <div className={cx('wrapper')}>
       <div className={cx('inner')}>
         <div className={cx('join')}>
-          <img className={cx('logo')} src={images.logoFooter} alt="logo" />
+          <img
+            className={cx('logo', 'hide-on-tablet-mobile')}
+            src={images.logoFooter}
+            alt="logo"
+          />
           <button className={cx('join-btn')}>JOIN THE COMUNITY</button>
         </div>
         <div>

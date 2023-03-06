@@ -4,6 +4,7 @@ import {
   faBell,
   faMagnifyingGlass,
   faPlus,
+  faUser,
   faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -23,6 +24,8 @@ function Header() {
   const [searchTrending, setSearchTrending] = useState([]);
   const searchInputRef = useRef(null);
   const [user, loading, error] = useAuthState(auth);
+  const navigation = useRef();
+  const headerUser = useRef();
   useEffect(() => {
     async function fetchData() {
       const data = await fetchTrending('all', 'day');
@@ -88,13 +91,22 @@ function Header() {
       )}
       <div className={cx('inner')}>
         <div className={cx('menu')}>
-          <a href="/" className={cx('logo')}>
+          <a href="#" className={cx('logo', 'hide-on-tablet-mobile')}>
             <img src={images.logoHeader} alt="tmdb" />
           </a>
-          <ul className={cx('navigation')}>
-            <FontAwesomeIcon className={cx('navigation-bar')} icon={faBars} />
+          <FontAwesomeIcon
+            className={cx('navigation-bar', 'hide-on-pc')}
+            icon={faBars}
+            onClick={() => {
+              navigation.current.classList.toggle(cx('hide-on-tablet-mobile'));
+            }}
+          />
+          <ul
+            ref={navigation}
+            className={cx('navigation', 'hide-on-tablet-mobile')}
+          >
             <li className={cx('navigation-item')}>
-              <a href="/movie">Movies</a>
+              <a href="#">Movies</a>
               <WrapperDropdownNav>
                 <ul className={cx('dropdown-list')}>
                   <li>Popular</li>
@@ -105,7 +117,7 @@ function Header() {
               </WrapperDropdownNav>
             </li>
             <li className={cx('navigation-item')}>
-              <a href="/tvshow">TV Shows</a>
+              <a href="#">TV Shows</a>
               <WrapperDropdownNav>
                 <ul className={cx('dropdown-list')}>
                   <li>Popular</li>
@@ -116,12 +128,24 @@ function Header() {
               </WrapperDropdownNav>
             </li>
             <li className={cx('navigation-item')}>
-              <a href="/people">People</a>
+              <a href="#">People</a>
               <WrapperDropdownNav>
                 <ul className={cx('dropdown-list')}>
                   <li>Popular People</li>
                 </ul>
               </WrapperDropdownNav>
+            </li>
+            <li className={cx('navigation-item', 'hide-on-pc')}>
+              <ul>
+                <li className={cx('gray')}>Contribution Bible</li>
+                <li className={cx('gray')}>Apps</li>
+                <li className={cx('gray')}>Discussions</li>
+                <li className={cx('gray')}>Leaderboard</li>
+                <li className={cx('gray')}>API</li>
+                <li className={cx('gray')}>Support</li>
+                <li className={cx('gray')}>About</li>
+                <li className={cx('gray')}>Login</li>
+              </ul>
             </li>
           </ul>
         </div>
@@ -129,23 +153,44 @@ function Header() {
           <img src={images.logoFooter} alt="tmdb" />
         </a>
         <ul className={cx('action')}>
-          <li>
+          <li className={cx('hide-on-tablet-mobile')}>
             <FontAwesomeIcon className={cx('icon')} icon={faPlus} />
           </li>
-          <li>
+          <li className={cx('hide-on-tablet-mobile')}>
             <div className={cx('language')}>EN</div>
           </li>
           {!user && (
             <>
-              <li>
+              <li className={cx('hide-on-tablet-mobile')}>
                 <a href="/login" className={cx('login-btn')}>
                   Login
                 </a>
               </li>
-              <li>
+              <li className={cx('hide-on-tablet-mobile')}>
                 <a href="/" className={cx('join-tmdb-btn')}>
                   Join TMDB
                 </a>
+              </li>
+              <li className={cx('header-user', 'hide-on-pc')}>
+                <FontAwesomeIcon
+                  onClick={() => {
+                    headerUser.current.classList.toggle(
+                      cx('hide-on-tablet-mobile')
+                    );
+                  }}
+                  icon={faUser}
+                />
+                <ul
+                  ref={headerUser}
+                  className={cx('header-user-wrapper', 'hide-on-tablet-mobile')}
+                >
+                  <li>
+                    <a href="/login">Login</a>
+                  </li>
+                  <li>
+                    <a href="/signup">Sign Up</a>
+                  </li>
+                </ul>
               </li>
             </>
           )}

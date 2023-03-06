@@ -48,3 +48,24 @@
   bottom: -40px;
   right: 0;
 }
+@media (max-width: 1023px) {
+  .hide-on-tablet-mobile {
+    display: none;
+  }
+  .wrapper {
+    padding: 40px var(--padding-page);
+  }
+  .inner {
+    width: 100%;
+    display: block;
+    .join {
+      button {
+        position: inherit;
+        margin-bottom: 20px;
+      }
+    }
+    & div:not(:first-child) {
+      margin: 20px 0px;
+    }
+  }
+}

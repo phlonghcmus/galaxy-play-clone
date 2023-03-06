@@ -10,6 +10,11 @@
     rgba(30, 213, 169, 1) 0%,
     rgba(1, 180, 228, 1) 100%
   );
+  --linear-text-color: linear-gradient(
+    to right,
+    rgba(192, 254, 207, 1) 0%,
+    rgba(30, 213, 169, 1) 100%
+  );
 }
 * {
   margin: 0px;
@@ -38,4 +43,9 @@ a[href] {
 }
 ul {
   list-style: none;
+}
+@media (max-width: 1023px) {
+  :root {
+    --padding-page: 20px;
+  }
 }

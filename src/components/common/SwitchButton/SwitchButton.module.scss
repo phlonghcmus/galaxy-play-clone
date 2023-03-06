@@ -23,14 +23,14 @@
     color: var(--primary-color);
   }
   .select {
-    background: var(--primary-logo-color);
+    background: var(--linear-text-color);
     background-clip: text;
     color: transparent;
   }
   &.linear {
     border-color: rgb(30, 213, 169);
     .item-select {
-      background: var(--primary-logo-color);
+      background: var(--linear-text-color);
     }
     .item {
       color: white;
@@ -38,5 +38,15 @@
     .select {
       color: var(--primary-color);
     }
+  }
+}
+@media (min-width: 1023px) {
+  .hide-on-pc {
+    display: none !important;
+  }
+}
+@media (max-width: 1023px) {
+  .hide-on-tablet-mobile {
+    display: none !important;
   }
 }

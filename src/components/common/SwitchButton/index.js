@@ -10,7 +10,7 @@ function SwitchButton({ select1, select2, linear, long, setState }) {
   const slide = useRef();
 
   return (
-    <div className={cx('selector', { linear })}>
+    <div className={cx('selector', { linear }, 'hide-on-tablet-mobile')}>
       <div ref={slide} className={cx('item-select')}></div>
       <button
         ref={btn1}

@@ -1,0 +1,60 @@
+.selector {
+  display: flex;
+  flex-direction: column;
+  height: 30px;
+  width: 100%;
+  position: relative;
+
+  .selector-wrapper {
+    z-index: 99;
+    position: absolute;
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--linear-text-color);
+    top: 0;
+    border: 1px solid var(--primary-color);
+
+    & div:first-child {
+      background: var(--primary-color);
+      border-radius: 16px;
+      button {
+        padding: 6px 24px;
+        background: var(--linear-text-color);
+        background-clip: text;
+        color: transparent;
+        svg {
+          margin-left: 8px;
+          color: rgba(30, 213, 169, 1);
+        }
+      }
+    }
+    & div:last-child {
+      button {
+        padding: 8px 24px;
+        background-color: transparent;
+        white-space: nowrap;
+      }
+    }
+  }
+  &.linear {
+    .selector-wrapper {
+      & div:first-child {
+        background: var(--linear-text-color);
+        button {
+          color: var(--primary-color);
+        }
+        svg {
+          color: var(--primary-color);
+        }
+      }
+    }
+  }
+}
+.hide {
+  display: none;
+}
+@media (min-width: 1023px) {
+  .hide-on-pc {
+    display: none;
+  }
+}
