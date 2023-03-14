@@ -17,14 +17,15 @@ import {
   addDoc,
 } from 'firebase/firestore';
 const firebaseConfig = {
-  apiKey: 'AIzaSyDIXJ5YT7hoNbBFqK3TBcV41-TzIO-7n7w',
-  authDomain: 'fir-auth-6edd8.firebaseapp.com',
-  projectId: 'fir-auth-6edd8',
-  storageBucket: 'fir-auth-6edd8.appspot.com',
-  messagingSenderId: '904760319835',
-  appId: '1:904760319835:web:44fd0d957f114b4e51447e',
-  measurementId: 'G-Q4TYKH9GG7',
+  apiKey: 'AIzaSyCmo6FZEERUDoM1xAT8qH_m890jhJBwL9s',
+  authDomain: 'themoviedb-8cdfb.firebaseapp.com',
+  projectId: 'themoviedb-8cdfb',
+  storageBucket: 'themoviedb-8cdfb.appspot.com',
+  messagingSenderId: '434365727335',
+  appId: '1:434365727335:web:150e733adf16e21005cac2',
+  measurementId: 'G-CK3M4XD7GW',
 };
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
