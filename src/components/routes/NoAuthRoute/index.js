@@ -11,7 +11,6 @@ function NoAuthRoute({ children }) {
       navigate('/profile');
     }
   }, [user, loading]);
-  console.log(user);
   return <>{!user && children}</>;
 }
 

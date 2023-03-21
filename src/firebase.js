@@ -22,8 +22,8 @@ const firebaseConfig = {
   projectId: 'themoviedb-8cdfb',
   storageBucket: 'themoviedb-8cdfb.appspot.com',
   messagingSenderId: '434365727335',
-  appId: '1:434365727335:web:150e733adf16e21005cac2',
-  measurementId: 'G-CK3M4XD7GW',
+  appId: '1:434365727335:web:2c5b8c545aa6903405cac2',
+  measurementId: 'G-BP727NZ2P1',
 };
 
 const app = initializeApp(firebaseConfig);
