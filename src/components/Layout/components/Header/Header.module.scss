@@ -45,6 +45,11 @@
     margin: 0px 16px;
     position: relative;
     white-space: nowrap;
+    h2 {
+      color: white;
+      font-size: 1.8rem;
+      font-weight: 600;
+    }
     > div {
       display: none;
     }
@@ -75,6 +80,9 @@
   }
   &:last-child {
     padding-bottom: 10px;
+  }
+  a {
+    color: black;
   }
 }
 .action {
@@ -225,6 +233,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  a {
+    color: white;
+  }
 }
 .search-result {
   z-index: 2;

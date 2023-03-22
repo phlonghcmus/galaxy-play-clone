@@ -91,7 +91,7 @@ function Header() {
       )}
       <div className={cx('inner')}>
         <div className={cx('menu')}>
-          <a href="#" className={cx('logo', 'hide-on-tablet-mobile')}>
+          <a href="/" className={cx('logo', 'hide-on-tablet-mobile')}>
             <img src={images.logoHeader} alt="tmdb" />
           </a>
           <FontAwesomeIcon
@@ -106,10 +106,12 @@ function Header() {
             className={cx('navigation', 'hide-on-tablet-mobile')}
           >
             <li className={cx('navigation-item')}>
-              <a href="#">Movies</a>
+              <h2>Movies</h2>
               <WrapperDropdownNav>
                 <ul className={cx('dropdown-list')}>
-                  <li>Popular</li>
+                  <li>
+                    <a href="/movie">Popular</a>
+                  </li>
                   <li>Now Playing</li>
                   <li>Upcoming</li>
                   <li>Top Rated</li>
@@ -117,7 +119,7 @@ function Header() {
               </WrapperDropdownNav>
             </li>
             <li className={cx('navigation-item')}>
-              <a href="#">TV Shows</a>
+              <h2>TV Shows</h2>
               <WrapperDropdownNav>
                 <ul className={cx('dropdown-list')}>
                   <li>Popular</li>
@@ -128,7 +130,7 @@ function Header() {
               </WrapperDropdownNav>
             </li>
             <li className={cx('navigation-item')}>
-              <a href="#">People</a>
+              <h2>People</h2>
               <WrapperDropdownNav>
                 <ul className={cx('dropdown-list')}>
                   <li>Popular People</li>

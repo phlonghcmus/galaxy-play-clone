@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import ErrorNofication from '~/components/common/ErrorNofication';
 import { signInWithGoogle, logInWithEmailAndPassword } from '~/firebase';
 
@@ -11,10 +11,13 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [err, setErr] = useState();
-  document.documentElement.style.setProperty(
-    '--default-layout-header-width',
-    '1400px'
-  );
+
+  useLayoutEffect(() => {
+    document.documentElement.style.setProperty(
+      '--default-layout-header-width',
+      '1400px'
+    );
+  }, []);
 
   return (
     <div className={cx('wrapper')}>
