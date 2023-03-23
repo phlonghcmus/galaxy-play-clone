@@ -1,47 +1,81 @@
 import classNames from 'classnames/bind';
-import { useLayoutEffect, useRef, useEffect } from 'react';
+import { useLayoutEffect, useRef, useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCaretDown,
+  faCheck,
+  faChevronRight,
+} from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 
 import styles from './Movie.module.scss';
 import { filtersSelect } from '~/redux/select';
-import { setSortFilter } from '~/redux/slices/filters';
+import { setSortFilter, toggleAvaliability } from '~/redux/slices/filters';
+import { sortOptions, availabilityOptions } from '~/utils/constant';
+import { fetchMovieDiscover } from '~/helpers/api/discover';
+import MediaCard from '~/components/common/MediaCard';
 const cx = classNames.bind(styles);
-const sortOptions = [
-  'Popularity Descending',
-  'Popularity Ascending',
-  'Rating Descending',
-  'Release Date Ascending',
-  'Release Date Descending',
-  'Title (A-Z)',
-  'Title (Z-A)',
-];
 function Movie() {
-  const selectOption = useRef();
+  const listRef = useRef();
+  const filters = useSelector(filtersSelect);
+  const sortRef = useRef();
+  const filtersRef = useRef();
+  const dispatch = useDispatch();
+  const { sort, availabilities } = filters;
+  const [listMovie, setListMovie] = useState([]);
+  const [onSearch, setOnSearch] = useState(false);
+  const [page, setPage] = useState(1);
+  const [onSort, setOnSort] = useState(false);
+
   useLayoutEffect(() => {
     document.documentElement.style.setProperty(
       '--default-layout-header-width',
       '1400px'
     );
   }, []);
-  const filters = useSelector(filtersSelect);
-  const sortRef = useRef();
-  const filtersRef = useRef();
-  const dispatch = useDispatch();
-  const { sort } = filters;
+  useEffect(() => {
+    const fetchData = async ({ page, sort_by }) => {
+      let data = await fetchMovieDiscover({ page: page, sort_by: sort_by });
+      setListMovie(listMovie.concat(data.data.results));
+    };
+    const fetchProps = {
+      page: page,
+    };
+    if (onSearch) {
+      if (onSort) {
+        let sortProps = { sort_by: sort.value };
+        Object.assign(fetchProps, sortProps);
+      }
+    }
+    fetchData(fetchProps);
+    const onScroll = () => {
+      const { scrollTop, clientHeight } = document.documentElement;
+      if (scrollTop + clientHeight > listRef.current.clientHeight) {
+        setPage(page + 1);
+      }
+    };
+    window.addEventListener('scroll', onScroll);
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+    };
+  }, [page, onSearch]);
   const handleShowFilter = (ref) => {
     ref.current.classList.toggle(cx('show'));
   };
   return (
     <div className={cx('wrapper')}>
       <div className={cx('inner')}>
+        {availabilities}
         <h1>Popular Movies</h1>
         <div className={cx('content')}>
           <div>
             <div ref={sortRef} className={cx('filter_panel')}>
               <div
-                onClick={() => handleShowFilter(sortRef)}
+                onClick={() => {
+                  handleShowFilter(sortRef);
+                  setOnSort(!onSort);
+                }}
                 className={cx('name')}
               >
                 <h2>Sort</h2>
@@ -50,7 +84,7 @@ function Movie() {
               <div className={cx('filter')}>
                 <h3>Sort Results By</h3>
                 <div className={cx('select')}>
-                  {sort}
+                  {sort.name}
                   <FontAwesomeIcon
                     aria-label="select"
                     className={cx('icon')}
@@ -61,10 +95,12 @@ function Movie() {
                       return (
                         <li
                           key={index}
-                          className={cx(sort === option ? 'selected' : '')}
+                          className={cx(
+                            sort.name === option.name ? 'selected' : ''
+                          )}
                           onClick={() => dispatch(setSortFilter(option))}
                         >
-                          {option}
+                          {option.name}
                         </li>
                       );
                     })}
@@ -114,18 +150,61 @@ function Movie() {
                     <div className={cx('radio-check')}>
                       <div className={cx('inside')}></div>
                     </div>
-                    <label htmlFor="haveseen">Movies I Have Seen</label>
+
+                    <label htmlFor="all-availability">Movies I Have Seen</label>
                   </li>
                 </ul>
               </div>
               <div className={cx('filter')}>
                 <h3>Availabilities</h3>
-                <br />
+                <ul>
+                  {(availabilities[0] === true
+                    ? availabilityOptions.slice(0, 1)
+                    : availabilityOptions
+                  ).map((availability, index) => {
+                    return (
+                      <li key={index}>
+                        <input
+                          type="checkbox"
+                          id={`availability-checkbox-${index}`}
+                          checked={availabilities[index]}
+                          onChange={() => dispatch(toggleAvaliability(index))}
+                        />
+                        <div className={cx('checkbox')}>
+                          <div className={cx('inside')}>
+                            <FontAwesomeIcon icon={faCheck} />
+                          </div>
+                        </div>
+                        <label htmlFor={`availability-checkbox-${index}`}>
+                          {availability}
+                        </label>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+              <div className={cx('filter')}>
+                <h3>Release Dates</h3>
               </div>
             </div>
+            <button
+              onClick={() => {
+                setOnSearch(true);
+                setPage(1);
+                setListMovie([]);
+              }}
+              disabled={!onSort}
+              className={cx('filters-btn')}
+            >
+              Search
+            </button>
           </div>
 
-          <div className={cx('list')}></div>
+          <div ref={listRef} className={cx('list')}>
+            {listMovie.map((movie, index) => (
+              <MediaCard border large item={movie} key={index} />
+            ))}
+          </div>
         </div>
       </div>
     </div>

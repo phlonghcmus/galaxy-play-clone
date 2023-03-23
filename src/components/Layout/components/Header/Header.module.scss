@@ -73,7 +73,7 @@
 .dropdown-list li {
   position: relative;
   cursor: pointer;
-  padding: 5px 0px;
+  padding: 8px 0px;
   font-weight: 400;
   &:first-child {
     padding-top: 10px;
@@ -90,6 +90,9 @@
   display: flex;
   align-items: center;
   font-weight: 700;
+  & > li > a {
+    color: white;
+  }
 }
 .icon {
   font-size: 2rem;
@@ -150,7 +153,7 @@
   li {
     padding-left: 24px;
     a {
-      color: #000;
+      color: rgba(0, 0, 0, 0.6);
     }
     &:hover {
       background-color: var(--primary-color);
@@ -160,9 +163,7 @@
     }
   }
   & li.line-list {
-    border-bottom: 1px solid #ccc;
-    padding-left: 0;
-    padding-top: 0;
+    border-top: 1px solid #ccc;
   }
 }
 .userid {
@@ -233,9 +234,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  a {
-    color: white;
-  }
+  color: white;
 }
 .search-result {
   z-index: 2;

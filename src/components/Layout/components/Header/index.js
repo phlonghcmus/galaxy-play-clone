@@ -208,8 +208,7 @@ function Header() {
                     <span className={cx('userid')}>{user.email}</span>
                     <span className={cx('viewprofile')}>View profile</span>
                     <ul className={cx('dropdown-list')}>
-                      <li className={cx('line-list')}></li>
-                      <li>
+                      <li className={cx('line-list')}>
                         <a href="/">Discussions</a>
                       </li>
                       <li>
@@ -221,15 +220,13 @@ function Header() {
                       <li>
                         <a href="/">Watchlist</a>
                       </li>
-                      <li className={cx('line-list')}></li>
-                      <li>
+                      <li className={cx('line-list')}>
                         <a href="/">Edit Profile</a>
                       </li>
                       <li>
                         <a href="/">Settings</a>
                       </li>
-                      <li className={cx('line-list')}></li>
-                      <li>
+                      <li className={cx('line-list')}>
                         <a href="/" onClick={logout}>
                           Logout
                         </a>
