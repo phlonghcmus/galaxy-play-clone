@@ -21,16 +21,19 @@ function Movie() {
   const sortRef = useRef();
   const loadingRef = useRef();
   const filtersRef = useRef();
-  const { availabilities } = filters;
+  // const { availabilities } = filters;
   const [listMovie, setListMovie] = useState([]);
   const [fetchProps, setFetchProps] = useState({ page: 1 });
-  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [onSort, setOnSort] = useState(false);
+  const [onFilter, setOnFilter] = useState(false);
   const [sort, setSort] = useState({
     name: 'Popularity Descending',
     value: 'popularity.desc',
   });
+  const [availabilities, setAvailabilities] = useState(
+    new Array(availabilityOptions.length).fill(true)
+  );
 
   useLayoutEffect(() => {
     document.documentElement.style.setProperty(
@@ -39,8 +42,12 @@ function Movie() {
     );
   }, []);
   useEffect(() => {
-    const fetchData = async ({ page, sort_by }) => {
-      let data = await fetchMovieDiscover({ page: page, sort_by: sort_by });
+    const fetchData = async ({ page, sort_by, availabilities }) => {
+      let data = await fetchMovieDiscover({
+        page: page,
+        sort_by: sort_by,
+        availabilities: availabilities,
+      });
       setListMovie(listMovie.concat(data.data.results));
     };
 
@@ -75,6 +82,10 @@ function Movie() {
       let sortProps = { sort_by: sort.value };
       Object.assign(fetchPropsVal, sortProps);
     }
+    if (onFilter) {
+      let availabilityProps = { availabilities: availabilities };
+      Object.assign(fetchPropsVal, availabilityProps);
+    }
     setPage(1);
     setListMovie([]);
     setFetchProps(fetchPropsVal);
@@ -82,7 +93,6 @@ function Movie() {
   return (
     <div className={cx('wrapper')}>
       <div className={cx('inner')}>
-        {availabilities}
         <h1>Popular Movies</h1>
         <div className={cx('content')}>
           <div>
@@ -124,9 +134,12 @@ function Movie() {
                 </div>
               </div>
             </div>
-            {/* <div ref={filtersRef} className={cx('filter_panel')}>
+            <div ref={filtersRef} className={cx('filter_panel')}>
               <div
-                onClick={() => handleShowFilter(filtersRef)}
+                onClick={() => {
+                  handleShowFilter(filtersRef);
+                  setOnFilter(!onFilter);
+                }}
                 className={cx('name')}
               >
                 <h2>Filters</h2>
@@ -184,7 +197,12 @@ function Movie() {
                           type="checkbox"
                           id={`availability-checkbox-${index}`}
                           checked={availabilities[index]}
-                          onChange={() => dispatch(toggleAvaliability(index))}
+                          onChange={() => {
+                            const newAvailabilities = [...availabilities];
+                            newAvailabilities[index] =
+                              !newAvailabilities[index];
+                            setAvailabilities(newAvailabilities);
+                          }}
                         />
                         <div className={cx('checkbox')}>
                           <div className={cx('inside')}>
@@ -192,7 +210,7 @@ function Movie() {
                           </div>
                         </div>
                         <label htmlFor={`availability-checkbox-${index}`}>
-                          {availability}
+                          {availability.name}
                         </label>
                       </li>
                     );
@@ -202,10 +220,10 @@ function Movie() {
               <div className={cx('filter')}>
                 <h3>Release Dates</h3>
               </div>
-            </div> */}
+            </div>
             <button
               onClick={() => handleSearchClick()}
-              disabled={!onSort}
+              disabled={!onSort && !onFilter}
               className={cx('filters-btn')}
             >
               Search

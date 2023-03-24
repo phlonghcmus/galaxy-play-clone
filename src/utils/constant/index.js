@@ -9,10 +9,10 @@ export const sortOptions = [
   { name: 'Title (Z-A)', value: 'original_title.asc' },
 ];
 export const availabilityOptions = [
-  'Search all availabilities?',
-  'Stream',
-  'Free',
-  'Ads',
-  'Rent',
-  'Buy',
+  { name: 'Search all availabilities?', value: undefined },
+  { name: 'Stream', value: 'flatrate' },
+  { name: 'Free', value: 'free' },
+  { name: 'Ads', value: 'ads' },
+  { name: 'Rent', value: 'rent' },
+  { name: 'Buy', value: 'buy' },
 ];
