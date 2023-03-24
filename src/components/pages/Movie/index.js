@@ -19,13 +19,18 @@ function Movie() {
   const listRef = useRef();
   const filters = useSelector(filtersSelect);
   const sortRef = useRef();
+  const loadingRef = useRef();
   const filtersRef = useRef();
-  const dispatch = useDispatch();
-  const { sort, availabilities } = filters;
+  const { availabilities } = filters;
   const [listMovie, setListMovie] = useState([]);
-  const [onSearch, setOnSearch] = useState(false);
+  const [fetchProps, setFetchProps] = useState({ page: 1 });
+  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [onSort, setOnSort] = useState(false);
+  const [sort, setSort] = useState({
+    name: 'Popularity Descending',
+    value: 'popularity.desc',
+  });
 
   useLayoutEffect(() => {
     document.documentElement.style.setProperty(
@@ -38,30 +43,41 @@ function Movie() {
       let data = await fetchMovieDiscover({ page: page, sort_by: sort_by });
       setListMovie(listMovie.concat(data.data.results));
     };
-    const fetchProps = {
-      page: page,
-    };
-    if (onSearch) {
-      if (onSort) {
-        let sortProps = { sort_by: sort.value };
-        Object.assign(fetchProps, sortProps);
-      }
-    }
-    fetchData(fetchProps);
+
+    fetchData(fetchProps).then(() =>
+      loadingRef.current.classList.remove(cx('show'))
+    );
     const onScroll = () => {
       const { scrollTop, clientHeight } = document.documentElement;
-      if (scrollTop + clientHeight > listRef.current.clientHeight) {
+      if (
+        scrollTop + clientHeight >
+        listRef.current.clientHeight + loadingRef.current.clientHeight
+      ) {
+        loadingRef.current.classList.add(cx('show'));
+        setFetchProps({ ...fetchProps, page: page + 1 });
         setPage(page + 1);
       }
     };
     window.addEventListener('scroll', onScroll);
-
     return () => {
       window.removeEventListener('scroll', onScroll);
     };
-  }, [page, onSearch]);
+  }, [page, fetchProps]);
   const handleShowFilter = (ref) => {
     ref.current.classList.toggle(cx('show'));
+  };
+
+  const handleSearchClick = () => {
+    const fetchPropsVal = {
+      page: 1,
+    };
+    if (onSort) {
+      let sortProps = { sort_by: sort.value };
+      Object.assign(fetchPropsVal, sortProps);
+    }
+    setPage(1);
+    setListMovie([]);
+    setFetchProps(fetchPropsVal);
   };
   return (
     <div className={cx('wrapper')}>
@@ -98,7 +114,7 @@ function Movie() {
                           className={cx(
                             sort.name === option.name ? 'selected' : ''
                           )}
-                          onClick={() => dispatch(setSortFilter(option))}
+                          onClick={() => setSort(option)}
                         >
                           {option.name}
                         </li>
@@ -108,7 +124,7 @@ function Movie() {
                 </div>
               </div>
             </div>
-            <div ref={filtersRef} className={cx('filter_panel')}>
+            {/* <div ref={filtersRef} className={cx('filter_panel')}>
               <div
                 onClick={() => handleShowFilter(filtersRef)}
                 className={cx('name')}
@@ -186,13 +202,9 @@ function Movie() {
               <div className={cx('filter')}>
                 <h3>Release Dates</h3>
               </div>
-            </div>
+            </div> */}
             <button
-              onClick={() => {
-                setOnSearch(true);
-                setPage(1);
-                setListMovie([]);
-              }}
+              onClick={() => handleSearchClick()}
               disabled={!onSort}
               className={cx('filters-btn')}
             >
@@ -205,6 +217,13 @@ function Movie() {
               <MediaCard border large item={movie} key={index} />
             ))}
           </div>
+        </div>
+        <div
+          className={cx('loading')}
+          ref={loadingRef}
+          style={{ width: '100%', height: '400px' }}
+        >
+          Loading
         </div>
       </div>
     </div>

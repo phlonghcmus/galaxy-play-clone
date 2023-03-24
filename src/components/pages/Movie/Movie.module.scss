@@ -190,6 +190,12 @@
     background-color: var(--primary-color);
   }
 }
+.loading {
+  display: none;
+  &.show {
+    display: block;
+  }
+}
 button.filters-btn:disabled {
   background-color: #ececec;
   color: #767676;
