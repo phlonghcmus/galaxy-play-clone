@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import DefaultLayout from '../Layout/DefaultLayout/DefaultLayout';
+import ProviderFiltersContext from '../pages/Movie/context/FiltersContext/Provider';
 import { routes } from '../routes';
 import AuthRoute from '../routes/AuthRoute';
 import NoAuthRoute from '../routes/NoAuthRoute';
@@ -28,7 +29,7 @@ function App() {
                 element={
                   <Auth>
                     <Layout>
-                      <Page />
+                      <ProviderFiltersContext>{Page}</ProviderFiltersContext>
                     </Layout>
                   </Auth>
                 }

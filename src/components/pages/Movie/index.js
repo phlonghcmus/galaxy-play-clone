@@ -1,39 +1,21 @@
 import classNames from 'classnames/bind';
-import { useLayoutEffect, useRef, useEffect, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faCaretDown,
-  faCheck,
-  faChevronRight,
-} from '@fortawesome/free-solid-svg-icons';
-import { useDispatch, useSelector } from 'react-redux';
+import { useLayoutEffect, useRef, useEffect, useContext } from 'react';
 
+import { StoreContext } from './context/FiltersContext/store';
 import styles from './Movie.module.scss';
-import { filtersSelect } from '~/redux/select';
-import { setSortFilter, toggleAvaliability } from '~/redux/slices/filters';
-import { sortOptions, availabilityOptions } from '~/utils/constant';
 import { fetchMovieDiscover } from '~/helpers/api/discover';
 import MediaCard from '~/components/common/MediaCard';
+import Filters from './components/Filters';
+import {
+  setListMovie,
+  setFetchProps,
+  setPage,
+} from './context/FiltersContext/actions';
 const cx = classNames.bind(styles);
-function Movie() {
+function Movie({ onTv }) {
+  const [state, dispatch] = useContext(StoreContext);
   const listRef = useRef();
-  const filters = useSelector(filtersSelect);
-  const sortRef = useRef();
   const loadingRef = useRef();
-  const filtersRef = useRef();
-  // const { availabilities } = filters;
-  const [listMovie, setListMovie] = useState([]);
-  const [fetchProps, setFetchProps] = useState({ page: 1 });
-  const [page, setPage] = useState(1);
-  const [onSort, setOnSort] = useState(false);
-  const [onFilter, setOnFilter] = useState(false);
-  const [sort, setSort] = useState({
-    name: 'Popularity Descending',
-    value: 'popularity.desc',
-  });
-  const [availabilities, setAvailabilities] = useState(
-    new Array(availabilityOptions.length).fill(true)
-  );
 
   useLayoutEffect(() => {
     document.documentElement.style.setProperty(
@@ -47,11 +29,12 @@ function Movie() {
         page: page,
         sort_by: sort_by,
         availabilities: availabilities,
+        onTv: onTv,
       });
-      setListMovie(listMovie.concat(data.data.results));
+      dispatch(setListMovie(state.listMovie.concat(data.data.results)));
     };
 
-    fetchData(fetchProps).then(() =>
+    fetchData(state.fetchProps).then(() =>
       loadingRef.current.classList.remove(cx('show'))
     );
     const onScroll = () => {
@@ -61,42 +44,22 @@ function Movie() {
         listRef.current.clientHeight + loadingRef.current.clientHeight
       ) {
         loadingRef.current.classList.add(cx('show'));
-        setFetchProps({ ...fetchProps, page: page + 1 });
-        setPage(page + 1);
+        dispatch(setFetchProps({ ...state.fetchProps, page: state.page + 1 }));
+        dispatch(setPage(state.page + 1));
       }
     };
     window.addEventListener('scroll', onScroll);
     return () => {
       window.removeEventListener('scroll', onScroll);
     };
-  }, [page, fetchProps]);
-  const handleShowFilter = (ref) => {
-    ref.current.classList.toggle(cx('show'));
-  };
-
-  const handleSearchClick = () => {
-    const fetchPropsVal = {
-      page: 1,
-    };
-    if (onSort) {
-      let sortProps = { sort_by: sort.value };
-      Object.assign(fetchPropsVal, sortProps);
-    }
-    if (onFilter) {
-      let availabilityProps = { availabilities: availabilities };
-      Object.assign(fetchPropsVal, availabilityProps);
-    }
-    setPage(1);
-    setListMovie([]);
-    setFetchProps(fetchPropsVal);
-  };
+  }, [state.page, state.fetchProps]);
   return (
     <div className={cx('wrapper')}>
       <div className={cx('inner')}>
         <h1>Popular Movies</h1>
         <div className={cx('content')}>
           <div>
-            <div ref={sortRef} className={cx('filter_panel')}>
+            {/* <div ref={sortRef} className={cx('filter_panel')}>
               <div
                 onClick={() => {
                   handleShowFilter(sortRef);
@@ -227,11 +190,12 @@ function Movie() {
               className={cx('filters-btn')}
             >
               Search
-            </button>
+            </button> */}
+            <Filters />
           </div>
 
           <div ref={listRef} className={cx('list')}>
-            {listMovie.map((movie, index) => (
+            {state.listMovie.map((movie, index) => (
               <MediaCard border large item={movie} key={index} />
             ))}
           </div>

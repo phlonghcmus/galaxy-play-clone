@@ -16,3 +16,12 @@ export const availabilityOptions = [
   { name: 'Rent', value: 'rent' },
   { name: 'Buy', value: 'buy' },
 ];
+export const releaseOptions = [
+  { name: 'Search all releases?', value: undefined },
+  { name: 'Premiere', value: 1 },
+  { name: 'Theatrical (limited)', value: 2 },
+  { name: 'Theatrical', value: 3 },
+  { name: 'Digital', value: 4 },
+  { name: 'Physical', value: 5 },
+  { name: 'TV', value: 6 },
+];

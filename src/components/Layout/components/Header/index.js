@@ -122,7 +122,9 @@ function Header() {
               <h2>TV Shows</h2>
               <WrapperDropdownNav>
                 <ul className={cx('dropdown-list')}>
-                  <li>Popular</li>
+                  <li>
+                    <a href="/tv">Popular</a>
+                  </li>
                   <li>Airing Today</li>
                   <li>On TV</li>
                   <li>Top Rated</li>

@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { availabilityOptions } from '~/utils/constant';
-const fetchMovieDiscover = ({ sort_by, page, availabilities }) => {
+const fetchMovieDiscover = ({ sort_by, page, availabilities, onTv }) => {
   //Read https://developers.themoviedb.org/3/discover/movie-discover
+  let typeProps = 'movie';
   const pageString = page ? `&page=${page}` : '';
   const sortbyString = sort_by ? `&sort_by=${sort_by}` : '';
   let availabilitiesString = `&with_watch_monetization_types=`;
@@ -29,8 +30,9 @@ const fetchMovieDiscover = ({ sort_by, page, availabilities }) => {
   } else {
     availabilitiesString = '';
   }
+  if (onTv) typeProps = 'tv';
   const url = `
-    https://api.themoviedb.org/3/discover/movie?api_key=${process.env.REACT_APP_API_KEY}${sortbyString}${pageString}${availabilitiesString}&watch_region=AL`;
+    https://api.themoviedb.org/3/discover/${typeProps}?api_key=${process.env.REACT_APP_API_KEY}${sortbyString}${pageString}${availabilitiesString}&watch_region=AL`;
   console.log(url);
   const response = axios.get(url);
   return response;
