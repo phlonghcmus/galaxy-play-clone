@@ -27,6 +27,18 @@ const setAvailabilities = (payload) => ({
   type: 'setAvailabilities',
   payload,
 });
+const setReleaseTypes = (payload) => ({
+  type: 'setReleaseTypes',
+  payload,
+});
+const setDateForm = (payload) => ({
+  type: 'setDateForm',
+  payload,
+});
+const setDateTo = (payload) => ({
+  type: 'setDateTo',
+  payload,
+});
 export {
   setOnSort,
   setSort,
@@ -35,4 +47,7 @@ export {
   setPage,
   setOnFilters,
   setAvailabilities,
+  setReleaseTypes,
+  setDateForm,
+  setDateTo,
 };

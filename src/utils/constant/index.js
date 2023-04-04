@@ -16,7 +16,7 @@ export const availabilityOptions = [
   { name: 'Rent', value: 'rent' },
   { name: 'Buy', value: 'buy' },
 ];
-export const releaseOptions = [
+export const releaseTypeOptions = [
   { name: 'Search all releases?', value: undefined },
   { name: 'Premiere', value: 1 },
   { name: 'Theatrical (limited)', value: 2 },

@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { availabilityOptions } from '~/utils/constant';
+import { availabilityOptions, releaseTypeOptions } from '~/utils/constant';
 export const initState = {
   listMovie: [],
   fetchProps: { page: 1 },
@@ -11,6 +11,11 @@ export const initState = {
   },
   onFilters: false,
   availabilities: new Array(availabilityOptions.length).fill(true),
+  releaseTypes: new Array(releaseTypeOptions.length).fill(true),
+  dateForm: '',
+  dateTo: new Date(new Date().setMonth(new Date().getMonth() + 6))
+    .toISOString()
+    .slice(0, 10),
 };
 function reducer(state, action) {
   switch (action.type) {
@@ -55,6 +60,22 @@ function reducer(state, action) {
         availabilities: action.payload,
       };
     }
+    case 'setReleaseTypes': {
+      return {
+        ...state,
+        releaseTypes: action.payload,
+      };
+    }
+    case 'setDateForm':
+      return {
+        ...state,
+        dateForm: action.payload,
+      };
+    case 'setDateTo':
+      return {
+        ...state,
+        dateTo: action.payload,
+      };
     default:
       throw new Error('Invalid Action');
   }

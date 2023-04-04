@@ -12,8 +12,6 @@
     .content {
       display: flex;
       flex-direction: row;
-      .list {
-      }
     }
   }
 }
@@ -87,6 +85,34 @@
               font-weight: bold;
             }
           }
+        }
+      }
+    }
+    .date_release-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+    }
+    input[type='date'] {
+      border: 1px solid black !important;
+      position: relative;
+      padding: 6px 0px;
+      width: 70%;
+      border-radius: 4px;
+      &::-webkit-calendar-picker-indicator {
+        position: absolute;
+        background: url(https://creazilla-store.fra1.digitaloceanspaces.com/icons/3233606/calendar-dates-icon-sm.png);
+        background-size: 60%; /* <------ */
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-color: #e4e7eb;
+        height: 100%;
+        right: 0;
+        padding: 0px 8px;
+        cursor: pointer;
+        &:hover {
+          background-color: #ced3db;
         }
       }
     }

@@ -15,6 +15,15 @@ const cx = classNames.bind(styles);
 
 function Filters() {
   const [state, dispatch] = useContext(StoreContext);
+  const {
+    onSort,
+    sort,
+    onFilters,
+    releaseTypes,
+    availabilities,
+    dateForm,
+    dateTo,
+  } = state;
   const handleShowFilter = (ref) => {
     ref.current.classList.toggle(cx('show'));
   };
@@ -22,13 +31,17 @@ function Filters() {
     const fetchPropsVal = {
       page: 1,
     };
-    if (state.onSort) {
-      let sortProps = { sort_by: state.sort.value };
-      Object.assign(fetchPropsVal, sortProps);
+    if (onSort) {
+      let sortProp = { sort_by: sort.value };
+      Object.assign(fetchPropsVal, sortProp);
     }
-    if (state.onFilters) {
-      let availabilityProps = { availabilities: state.availabilities };
-      Object.assign(fetchPropsVal, availabilityProps);
+    if (onFilters) {
+      let availabilityProp = { availabilities: availabilities };
+      Object.assign(fetchPropsVal, availabilityProp);
+      let releaseTypeProp = { releaseTypes: releaseTypes };
+      Object.assign(fetchPropsVal, releaseTypeProp);
+      let releaseDate = { gte: dateForm, lte: dateTo };
+      Object.assign(fetchPropsVal, releaseDate);
     }
     dispatch(setPage(1));
     dispatch(setListMovie([]));
@@ -40,7 +53,7 @@ function Filters() {
       <FiltersPanel handleShowFilter={handleShowFilter} />
       <button
         onClick={() => handleSearchClick()}
-        disabled={!state.onSort && !state.onFilters}
+        disabled={!onSort && !onFilters}
         className={cx('filters-btn')}
       >
         Search

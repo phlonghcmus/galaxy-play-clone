@@ -14,6 +14,7 @@ import {
 const cx = classNames.bind(styles);
 function Movie({ onTv }) {
   const [state, dispatch] = useContext(StoreContext);
+  const { fetchProps, listMovie, page } = state;
   const listRef = useRef();
   const loadingRef = useRef();
 
@@ -24,17 +25,27 @@ function Movie({ onTv }) {
     );
   }, []);
   useEffect(() => {
-    const fetchData = async ({ page, sort_by, availabilities }) => {
+    const fetchData = async ({
+      page,
+      sort_by,
+      availabilities,
+      releaseTypes,
+      gte,
+      lte,
+    }) => {
       let data = await fetchMovieDiscover({
         page: page,
         sort_by: sort_by,
         availabilities: availabilities,
+        releaseTypes: releaseTypes,
+        gte: gte,
+        lte: lte,
         onTv: onTv,
       });
-      dispatch(setListMovie(state.listMovie.concat(data.data.results)));
+      dispatch(setListMovie(listMovie.concat(data.data.results)));
     };
 
-    fetchData(state.fetchProps).then(() =>
+    fetchData(fetchProps).then(() =>
       loadingRef.current.classList.remove(cx('show'))
     );
     const onScroll = () => {
@@ -44,7 +55,7 @@ function Movie({ onTv }) {
         listRef.current.clientHeight + loadingRef.current.clientHeight
       ) {
         loadingRef.current.classList.add(cx('show'));
-        dispatch(setFetchProps({ ...state.fetchProps, page: state.page + 1 }));
+        dispatch(setFetchProps({ ...fetchProps, page: page + 1 }));
         dispatch(setPage(state.page + 1));
       }
     };
@@ -52,7 +63,7 @@ function Movie({ onTv }) {
     return () => {
       window.removeEventListener('scroll', onScroll);
     };
-  }, [state.page, state.fetchProps]);
+  }, [page, fetchProps]);
   return (
     <div className={cx('wrapper')}>
       <div className={cx('inner')}>
@@ -195,7 +206,7 @@ function Movie({ onTv }) {
           </div>
 
           <div ref={listRef} className={cx('list')}>
-            {state.listMovie.map((movie, index) => (
+            {listMovie.map((movie, index) => (
               <MediaCard border large item={movie} key={index} />
             ))}
           </div>

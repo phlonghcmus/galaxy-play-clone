@@ -8,20 +8,24 @@ import styles from '../../Movie.module.scss';
 import {
   setOnFilters,
   setAvailabilities,
+  setReleaseTypes,
+  setDateForm,
+  setDateTo,
 } from '../../context/FiltersContext/actions';
-import { availabilityOptions } from '~/utils/constant';
+import { availabilityOptions, releaseTypeOptions } from '~/utils/constant';
 
 const cx = classNames.bind(styles);
 
 function FiltersPanel({ handleShowFilter }) {
   const [state, dispatch] = useContext(StoreContext);
+  const { onFilters, availabilities, releaseTypes, dateForm, dateTo } = state;
   const filtersRef = useRef();
   return (
     <div ref={filtersRef} className={cx('filter_panel')}>
       <div
         onClick={() => {
           handleShowFilter(filtersRef);
-          dispatch(setOnFilters(!state.onFilters));
+          dispatch(setOnFilters(!onFilters));
         }}
         className={cx('name')}
       >
@@ -53,14 +57,14 @@ function FiltersPanel({ handleShowFilter }) {
               <div className={cx('inside')}></div>
             </div>
 
-            <label htmlFor="all-availability">Movies I Have Seen</label>
+            <label htmlFor="haveseen">Movies I Have Seen</label>
           </li>
         </ul>
       </div>
       <div className={cx('filter')}>
         <h3>Availabilities</h3>
         <ul>
-          {(state.availabilities[0] === true
+          {(availabilities[0] === true
             ? availabilityOptions.slice(0, 1)
             : availabilityOptions
           ).map((availability, index) => {
@@ -69,12 +73,10 @@ function FiltersPanel({ handleShowFilter }) {
                 <input
                   type="checkbox"
                   id={`availability-checkbox-${index}`}
-                  checked={state.availabilities[index]}
+                  checked={availabilities[index]}
                   onChange={() => {
-                    const newAvailabilities = [...state.availabilities];
+                    const newAvailabilities = [...availabilities];
                     newAvailabilities[index] = !newAvailabilities[index];
-                    console.log(newAvailabilities);
-                    console.log(state.availabilities);
                     dispatch(setAvailabilities(newAvailabilities));
                   }}
                 />
@@ -93,6 +95,58 @@ function FiltersPanel({ handleShowFilter }) {
       </div>
       <div className={cx('filter')}>
         <h3>Release Dates</h3>
+        <ul>
+          {(releaseTypes[0] === true
+            ? releaseTypeOptions.slice(0, 1)
+            : releaseTypeOptions
+          ).map((releaseType, index) => {
+            return (
+              <li key={index}>
+                <input
+                  type="checkbox"
+                  id={`releaseType-checkbox-${index}`}
+                  checked={releaseTypes[index]}
+                  onChange={() => {
+                    const newReleaseTypes = [...releaseTypes];
+                    newReleaseTypes[index] = !newReleaseTypes[index];
+                    dispatch(setReleaseTypes(newReleaseTypes));
+                  }}
+                />
+                <div className={cx('checkbox')}>
+                  <div className={cx('inside')}>
+                    <FontAwesomeIcon icon={faCheck} />
+                  </div>
+                </div>
+                <label htmlFor={`releaseType-checkbox-${index}`}>
+                  {releaseType.name}
+                </label>
+              </li>
+            );
+          })}
+        </ul>
+        <label className={cx('date_release-label')} htmlFor="from">
+          from
+          <input
+            id="from"
+            type="date"
+            placeholder=""
+            value={dateForm}
+            onChange={(e) => dispatch(setDateForm(e.target.value))}
+          />
+        </label>
+        <label className={cx('date_release-label')} htmlFor="to">
+          to
+          <input
+            id="to"
+            type="date"
+            placeholder=""
+            value={dateTo}
+            onChange={(e) => dispatch(setDateTo(e.target.value))}
+          />
+        </label>
+      </div>
+      <div className={cx('filter')}>
+        <h3>Genres</h3>
       </div>
     </div>
   );
