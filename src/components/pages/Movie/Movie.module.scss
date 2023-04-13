@@ -94,6 +94,28 @@
       justify-content: space-between;
       margin-top: 8px;
     }
+    .genre-tag {
+      border: 1px solid #9e9e9e;
+      padding: 2px 12px;
+      border-radius: 16px;
+      cursor: pointer;
+      display: inline-block;
+      &.selected {
+        background-color: var(--light-blue);
+        color: white;
+        border-color: var(--light-blue);
+      }
+      &:hover {
+        background-color: var(--light-blue);
+        color: white;
+        border-color: var(--light-blue);
+      }
+    }
+    .genres {
+      gap: 8px;
+      display: flex;
+      flex-wrap: wrap;
+    }
     input[type='date'] {
       border: 1px solid black !important;
       position: relative;

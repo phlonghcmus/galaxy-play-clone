@@ -23,6 +23,7 @@ function Filters() {
     availabilities,
     dateForm,
     dateTo,
+    genres,
   } = state;
   const handleShowFilter = (ref) => {
     ref.current.classList.toggle(cx('show'));
@@ -40,8 +41,10 @@ function Filters() {
       Object.assign(fetchPropsVal, availabilityProp);
       let releaseTypeProp = { releaseTypes: releaseTypes };
       Object.assign(fetchPropsVal, releaseTypeProp);
-      let releaseDate = { gte: dateForm, lte: dateTo };
-      Object.assign(fetchPropsVal, releaseDate);
+      let releaseDateProp = { gte: dateForm, lte: dateTo };
+      Object.assign(fetchPropsVal, releaseDateProp);
+      let genresProp = { genres: genres };
+      Object.assign(fetchPropsVal, genresProp);
     }
     dispatch(setPage(1));
     dispatch(setListMovie([]));

@@ -1,4 +1,4 @@
-import { useContext, useRef } from 'react';
+import { useContext, useRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames/bind';
 import { faCheck, faChevronRight } from '@fortawesome/free-solid-svg-icons';
@@ -11,15 +11,31 @@ import {
   setReleaseTypes,
   setDateForm,
   setDateTo,
+  setGenres,
+  toggleGenre,
 } from '../../context/FiltersContext/actions';
 import { availabilityOptions, releaseTypeOptions } from '~/utils/constant';
+import { fetchAllGenres } from '~/helpers/api/genres';
 
 const cx = classNames.bind(styles);
 
 function FiltersPanel({ handleShowFilter }) {
   const [state, dispatch] = useContext(StoreContext);
-  const { onFilters, availabilities, releaseTypes, dateForm, dateTo } = state;
+  const { onFilters, availabilities, releaseTypes, dateForm, dateTo, genres } =
+    state;
   const filtersRef = useRef();
+  useEffect(() => {
+    const fetchData = async () => {
+      let data = await fetchAllGenres();
+      let genresData = data.data.genres;
+      genresData.forEach((genre) => {
+        genre.value = false;
+      });
+      dispatch(setGenres(genresData));
+    };
+    fetchData();
+  }, []);
+
   return (
     <div ref={filtersRef} className={cx('filter_panel')}>
       <div
@@ -147,6 +163,21 @@ function FiltersPanel({ handleShowFilter }) {
       </div>
       <div className={cx('filter')}>
         <h3>Genres</h3>
+        <div className={cx('genres')}>
+          {genres.length > 0
+            ? genres.map((genre, index) => {
+                return (
+                  <div
+                    key={index}
+                    className={cx('genre-tag', genre.value ? 'selected' : '')}
+                    onClick={() => dispatch(toggleGenre(genre.id))}
+                  >
+                    {genre.name}
+                  </div>
+                );
+              })
+            : ''}
+        </div>
       </div>
     </div>
   );

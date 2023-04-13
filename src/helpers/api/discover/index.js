@@ -8,18 +8,11 @@ const fetchMovieDiscover = ({
   gte,
   lte,
   onTv,
+  genres,
 }) => {
   //Read https://developers.themoviedb.org/3/discover/movie-discover
   let typeProps = 'movie';
   if (onTv) typeProps = 'tv';
-  console.log(gte);
-  console.log(lte);
-  // if (releaseDate) {
-  //   if (releaseDate.gte) {
-  //   }
-  //   if (releaseDate.lte) {
-  //   }
-  // }
 
   let availabilitiesString = '';
   if (availabilities) {
@@ -70,7 +63,13 @@ const fetchMovieDiscover = ({
   } else {
     releaseTypeString = '';
   }
-
+  let with_genres = [];
+  if (genres) {
+    genres.forEach((genre) => {
+      if (genre.value) with_genres.push(genre.id);
+    });
+  }
+  console.log(with_genres);
   const params = {
     api_key: process.env.REACT_APP_API_KEY,
     page: page,
@@ -80,6 +79,7 @@ const fetchMovieDiscover = ({
     with_release_type: releaseTypeString,
     'release_date.gte': gte ? new Date(gte) : '',
     'release_date.lte': lte ? new Date(lte) : '',
+    with_genres: with_genres.join(','),
   };
   const response = axios.get(
     `https://api.themoviedb.org/3/discover/${typeProps}`,
@@ -87,6 +87,11 @@ const fetchMovieDiscover = ({
       params,
     }
   );
+  axios
+    .get(
+      'https://api.themoviedb.org/3/configuration/languages?api_key=41d8502e79098c9f163a19bab0e8599f'
+    )
+    .then((data) => console.log(data));
   return response;
 };
 export { fetchMovieDiscover };

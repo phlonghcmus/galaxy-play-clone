@@ -25,3 +25,22 @@ export const releaseTypeOptions = [
   { name: 'Physical', value: 5 },
   { name: 'TV', value: 6 },
 ];
+
+// export const genreOptions = [
+//   'Action & Adventure',
+//   'Animation',
+//   'Comedy',
+//   'Crime',
+//   'Documentary',
+//   'Drama',
+//   'Family',
+//   'Kids',
+//   'Mystery',
+//   'News',
+//   'Reality',
+//   'Sci-Fi & Fantasy',
+//   'Soap',
+//   'Talk',
+//   'War & Politics',
+//   'Western',
+// ];

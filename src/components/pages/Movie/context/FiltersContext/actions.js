@@ -39,6 +39,14 @@ const setDateTo = (payload) => ({
   type: 'setDateTo',
   payload,
 });
+const setGenres = (payload) => ({
+  type: 'setGenres',
+  payload,
+});
+const toggleGenre = (payload) => ({
+  type: 'toggleGenre',
+  payload,
+});
 export {
   setOnSort,
   setSort,
@@ -50,4 +58,6 @@ export {
   setReleaseTypes,
   setDateForm,
   setDateTo,
+  setGenres,
+  toggleGenre,
 };

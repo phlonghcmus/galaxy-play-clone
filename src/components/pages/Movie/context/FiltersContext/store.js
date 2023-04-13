@@ -16,6 +16,7 @@ export const initState = {
   dateTo: new Date(new Date().setMonth(new Date().getMonth() + 6))
     .toISOString()
     .slice(0, 10),
+  genres: {},
 };
 function reducer(state, action) {
   switch (action.type) {
@@ -75,6 +76,20 @@ function reducer(state, action) {
       return {
         ...state,
         dateTo: action.payload,
+      };
+    case 'setGenres':
+      return {
+        ...state,
+        genres: action.payload,
+      };
+    case 'toggleGenre':
+      return {
+        ...state,
+        genres: state.genres.map((genre) =>
+          genre.id === action.payload
+            ? { ...genre, value: !genre.value }
+            : genre
+        ),
       };
     default:
       throw new Error('Invalid Action');
