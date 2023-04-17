@@ -67,7 +67,7 @@ function Movie({ onTv }) {
     };
   }, [page, fetchProps]);
   return (
-    <div className={cx('wrapper')}>
+    <div className={cx('wrapper')} onDragOver={(e) => e.preventDefault()}>
       <div className={cx('inner')}>
         <h1>Popular Movies</h1>
         <div className={cx('content')}>

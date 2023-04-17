@@ -69,7 +69,6 @@ const fetchMovieDiscover = ({
       if (genre.value) with_genres.push(genre.id);
     });
   }
-  console.log(with_genres);
   const params = {
     api_key: process.env.REACT_APP_API_KEY,
     page: page,
@@ -87,11 +86,6 @@ const fetchMovieDiscover = ({
       params,
     }
   );
-  axios
-    .get(
-      'https://api.themoviedb.org/3/configuration/languages?api_key=41d8502e79098c9f163a19bab0e8599f'
-    )
-    .then((data) => console.log(data));
   return response;
 };
 export { fetchMovieDiscover };

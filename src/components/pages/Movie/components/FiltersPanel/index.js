@@ -16,6 +16,7 @@ import {
 } from '../../context/FiltersContext/actions';
 import { availabilityOptions, releaseTypeOptions } from '~/utils/constant';
 import { fetchAllGenres } from '~/helpers/api/genres';
+import SliderInput from '~/components/common/SliderInput';
 
 const cx = classNames.bind(styles);
 
@@ -178,6 +179,13 @@ function FiltersPanel({ handleShowFilter }) {
               })
             : ''}
         </div>
+      </div>
+      <div className={cx('filter')}>
+        <h3>Certification</h3>
+      </div>
+      <div className={cx('filter')}>
+        <h3>User Score</h3>
+        <SliderInput min={0} max={10} step={1} bigStep={5} />
       </div>
     </div>
   );

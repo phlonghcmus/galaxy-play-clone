@@ -43,6 +43,11 @@ a[href] {
 ul {
   list-style: none;
 }
+html.grabbing {
+  *[dragable='true'] {
+    cursor: pointer !important;
+  }
+}
 @media (max-width: 1023px) {
   :root {
     --padding-page: 20px;
