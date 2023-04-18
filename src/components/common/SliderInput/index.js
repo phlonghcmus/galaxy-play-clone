@@ -1,18 +1,27 @@
 import classNames from 'classnames/bind';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 
 import styles from './SliderInput.module.scss';
+import { StoreContext } from '~/components/pages/Movie/context/FiltersContext/store';
 
 const cx = classNames.bind(styles);
 
-function SliderInput({ min, max, step, bigStep }) {
-  const [minState, setMinState] = useState(min);
-  const [maxState, setMaxState] = useState(max);
+function SliderInput({
+  min,
+  max,
+  step,
+  bigStep,
+  minState,
+  maxState,
+  setMinState,
+  setMaxState,
+}) {
   const [range, setRange] = useState({});
   const sliderTrack = useRef();
   const minTrack = useRef();
   const maxTrack = useRef();
   const notificationSlider = useRef();
+  const [state, dispatch] = useContext(StoreContext);
 
   useEffect(() => {
     let rangeProp = [];
@@ -27,14 +36,14 @@ function SliderInput({ min, max, step, bigStep }) {
       isLong: true,
     });
     start = start + stepRatio / 2;
-    ++value;
+    value = value + step;
     for (let i = 1; i <= (max - min) / step - 1; i++) {
       rangeProp.push({
         lte: start,
         gte: start + stepRatio,
         width: stepRatio,
         value: value,
-        isLong: i % bigStep === 0 ? true : false,
+        isLong: value % bigStep === 0 ? true : false,
       });
       start = start + stepRatio;
       value = value + step;
@@ -44,16 +53,16 @@ function SliderInput({ min, max, step, bigStep }) {
       gte: start + stepRatio / 2,
       width: stepRatio / 2,
       value: max,
-      isLong: rangeProp.length % bigStep === 0 ? true : false,
+      isLong: max % bigStep === 0 ? true : false,
     });
     setRange(rangeProp);
   }, []);
 
   const handleClickTick = (value) => {
     if (Math.abs(minState - value) < Math.abs(maxState - value)) {
-      setMinState(value);
+      dispatch(setMinState(value));
     } else {
-      setMaxState(value);
+      dispatch(setMaxState(value));
     }
     showNotification();
     hideNotification();
@@ -67,6 +76,58 @@ function SliderInput({ min, max, step, bigStep }) {
     setTimeout(() => {
       notificationSlider.current.classList.remove(cx('notification-show'));
     }, 500);
+  };
+
+  const onDragMin = (e) => {
+    e.preventDefault();
+    const reactSlider = sliderTrack.current.getBoundingClientRect();
+    const sliderRatio = (e.clientX - reactSlider.x) / reactSlider.width;
+    if (sliderRatio > range[range.length - 1].gte) {
+      dispatch(setMinState(range[range.length - 1].value));
+      return;
+    }
+    if (sliderRatio < range[0].gte) {
+      dispatch(setMinState(range[0].value));
+      return;
+    }
+    range.forEach((element) => {
+      if (element.lte <= sliderRatio && sliderRatio <= element.gte) {
+        dispatch(setMinState(element.value));
+        if (element.value > maxState) dispatch(setMaxState(element.value));
+        return;
+      }
+    });
+  };
+
+  const onDragMax = (e) => {
+    e.preventDefault();
+    const reactSlider = sliderTrack.current.getBoundingClientRect();
+    const sliderRatio = (e.clientX - reactSlider.x) / reactSlider.width;
+    if (sliderRatio > range[range.length - 1].gte) {
+      dispatch(setMaxState(range[range.length - 1].value));
+      return;
+    }
+    if (sliderRatio < range[0].gte) {
+      dispatch(setMaxState(range[0].value));
+      return;
+    }
+    range.forEach((element) => {
+      if (element.lte <= sliderRatio && sliderRatio <= element.gte) {
+        dispatch(setMaxState(element.value));
+        if (element.value < minState) dispatch(setMinState(element.value));
+        return;
+      }
+    });
+  };
+
+  const onDragStart = (target) => {
+    target.classList.add(cx('draghandle'));
+    showNotification();
+  };
+
+  const onDragEnd = (target) => {
+    target.classList.remove(cx('draghandle'));
+    hideNotification();
   };
   return (
     <div className={cx('slider-wrap')}>
@@ -94,8 +155,9 @@ function SliderInput({ min, max, step, bigStep }) {
           <></>
         )}
       </ul>
-      <div ref={sliderTrack} className={cx('slider-track')}>
+      <div draggable={false} ref={sliderTrack} className={cx('slider-track')}>
         <div
+          draggable={false}
           style={{
             left: `${(minState / (max - min)) * 100}%`,
             width: `${
@@ -113,84 +175,25 @@ function SliderInput({ min, max, step, bigStep }) {
         </div>
         <div
           ref={minTrack}
+          id="min-drag"
           style={{ left: `${(minState / (max - min)) * 100}%` }}
           className={cx('track-point')}
-          onDragStart={(e) => {
-            minTrack.current.classList.add(cx('draghandle'));
-            showNotification();
-          }}
-          onDragEnd={(e) => {
-            minTrack.current.classList.remove(cx('draghandle'));
-            hideNotification();
-          }}
-          onDrag={(e) => {
-            e.preventDefault();
-            const reactSlider = sliderTrack.current.getBoundingClientRect();
-            const sliderRatio = (e.clientX - reactSlider.x) / reactSlider.width;
-            if (sliderRatio > range[range.length - 1].gte) {
-              setMinState(range[range.length - 1].value);
-              return;
-            }
-            if (sliderRatio < range[0].gte) {
-              setMinState(range[0].value);
-              return;
-            }
-            range.forEach((element) => {
-              if (element.lte <= sliderRatio && sliderRatio <= element.gte) {
-                setMinState(element.value);
-                if (element.value > maxState) setMaxState(element.value);
-                return;
-              }
-            });
-          }}
+          onDragStart={() => onDragStart(minTrack.current)}
+          onDragEnd={() => onDragEnd(minTrack.current)}
+          onDrag={(e) => onDragMin(e)}
+          draggable={true}
         ></div>
+
         <div
           ref={maxTrack}
+          id="max-drag"
           style={{ left: `${(maxState / (max - min)) * 100}%` }}
           className={cx('track-point')}
-          onDragStart={(e) => {
-            maxTrack.current.classList.add(cx('draghandle'));
-            showNotification();
-          }}
-          onDragEnd={(e) => {
-            maxTrack.current.classList.remove(cx('draghandle'));
-            hideNotification();
-          }}
-          onDrag={(e) => {
-            e.preventDefault();
-            const reactSlider = sliderTrack.current.getBoundingClientRect();
-            const sliderRatio = (e.clientX - reactSlider.x) / reactSlider.width;
-            if (sliderRatio > range[range.length - 1].gte) {
-              setMaxState(range[range.length - 1].value);
-              return;
-            }
-            if (sliderRatio < range[0].gte) {
-              setMaxState(range[0].value);
-              return;
-            }
-            range.forEach((element) => {
-              if (element.lte <= sliderRatio && sliderRatio <= element.gte) {
-                setMaxState(element.value);
-                if (element.value < minState) setMinState(element.value);
-                return;
-              }
-            });
-          }}
+          onDragStart={() => onDragStart(maxTrack.current)}
+          onDragEnd={() => onDragEnd(maxTrack.current)}
+          onDrag={(e) => onDragMax(e)}
+          draggable={true}
         ></div>
-      </div>
-      <div className={cx('slider-input')}>
-        {/* <input
-          id="vote_average_gte"
-          name="vote_average.gte"
-          value="0"
-          type="text"
-        />
-        <input
-          id="vote_average_lte"
-          name="vote_average.lte"
-          value="10"
-          type="text"
-        /> */}
       </div>
     </div>
   );

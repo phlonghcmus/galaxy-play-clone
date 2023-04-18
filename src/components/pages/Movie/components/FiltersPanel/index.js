@@ -13,6 +13,12 @@ import {
   setDateTo,
   setGenres,
   toggleGenre,
+  setVoteMin,
+  setVoteMax,
+  setUserVoteMin,
+  setUserVoteMax,
+  setRuntimeMax,
+  setRuntimeMin,
 } from '../../context/FiltersContext/actions';
 import { availabilityOptions, releaseTypeOptions } from '~/utils/constant';
 import { fetchAllGenres } from '~/helpers/api/genres';
@@ -22,8 +28,20 @@ const cx = classNames.bind(styles);
 
 function FiltersPanel({ handleShowFilter }) {
   const [state, dispatch] = useContext(StoreContext);
-  const { onFilters, availabilities, releaseTypes, dateForm, dateTo, genres } =
-    state;
+  const {
+    onFilters,
+    availabilities,
+    releaseTypes,
+    dateForm,
+    dateTo,
+    genres,
+    voteMin,
+    voteMax,
+    userVoteMin,
+    userVoteMax,
+    runtimeMin,
+    runtimeMax,
+  } = state;
   const filtersRef = useRef();
   useEffect(() => {
     const fetchData = async () => {
@@ -185,7 +203,42 @@ function FiltersPanel({ handleShowFilter }) {
       </div>
       <div className={cx('filter')}>
         <h3>User Score</h3>
-        <SliderInput min={0} max={10} step={1} bigStep={5} />
+        <SliderInput
+          min={0}
+          max={10}
+          step={1}
+          bigStep={5}
+          minState={voteMin}
+          maxState={voteMax}
+          setMinState={setVoteMin}
+          setMaxState={setVoteMax}
+        />
+      </div>
+      <div className={cx('filter')}>
+        <h3>Minimum User Votes</h3>
+        <SliderInput
+          min={0}
+          max={500}
+          step={50}
+          bigStep={100}
+          minState={userVoteMin}
+          maxState={userVoteMax}
+          setMinState={setUserVoteMin}
+          setMaxState={setUserVoteMax}
+        />
+      </div>
+      <div className={cx('filter')}>
+        <h3>Run time</h3>
+        <SliderInput
+          min={0}
+          max={400}
+          step={15}
+          bigStep={120}
+          minState={runtimeMin}
+          maxState={runtimeMax}
+          setMinState={setRuntimeMin}
+          setMaxState={setRuntimeMax}
+        />
       </div>
     </div>
   );

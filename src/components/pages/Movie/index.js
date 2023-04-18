@@ -30,23 +30,26 @@ function Movie({ onTv }) {
       sort_by,
       availabilities,
       releaseTypes,
-      gte,
-      lte,
+      date,
       genres,
+      vote,
+      userVote,
+      runtime,
     }) => {
       let data = await fetchMovieDiscover({
         page: page,
         sort_by: sort_by,
         availabilities: availabilities,
         releaseTypes: releaseTypes,
-        gte: gte,
-        lte: lte,
+        date: date,
         onTv: onTv,
         genres: genres,
+        vote: vote,
+        userVote: userVote,
+        runtime: runtime,
       });
       dispatch(setListMovie(listMovie.concat(data.data.results)));
     };
-
     fetchData(fetchProps).then(() =>
       loadingRef.current.classList.remove(cx('show'))
     );

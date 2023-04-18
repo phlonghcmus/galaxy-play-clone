@@ -17,6 +17,12 @@ export const initState = {
     .toISOString()
     .slice(0, 10),
   genres: {},
+  voteMin: 0,
+  voteMax: 10,
+  userVoteMin: 0,
+  userVoteMax: 500,
+  runtimeMin: 0,
+  runtimeMax: 400,
 };
 function reducer(state, action) {
   switch (action.type) {
@@ -90,6 +96,36 @@ function reducer(state, action) {
             ? { ...genre, value: !genre.value }
             : genre
         ),
+      };
+    case 'setVoteMin':
+      return {
+        ...state,
+        voteMin: action.payload,
+      };
+    case 'setVoteMax':
+      return {
+        ...state,
+        voteMax: action.payload,
+      };
+    case 'setUserVoteMin':
+      return {
+        ...state,
+        userVoteMin: action.payload,
+      };
+    case 'setUserVoteMax':
+      return {
+        ...state,
+        userVoteMax: action.payload,
+      };
+    case 'setRuntimeMin':
+      return {
+        ...state,
+        runtimeMin: action.payload,
+      };
+    case 'setRuntimeMax':
+      return {
+        ...state,
+        runtimeMax: action.payload,
       };
     default:
       throw new Error('Invalid Action');

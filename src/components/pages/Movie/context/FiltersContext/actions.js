@@ -47,6 +47,30 @@ const toggleGenre = (payload) => ({
   type: 'toggleGenre',
   payload,
 });
+const setVoteMin = (payload) => ({
+  type: 'setVoteMin',
+  payload,
+});
+const setVoteMax = (payload) => ({
+  type: 'setVoteMax',
+  payload,
+});
+const setUserVoteMin = (payload) => ({
+  type: 'setUserVoteMin',
+  payload,
+});
+const setUserVoteMax = (payload) => ({
+  type: 'setUserVoteMax',
+  payload,
+});
+const setRuntimeMin = (payload) => ({
+  type: 'setuntimeMin',
+  payload,
+});
+const setRuntimeMax = (payload) => ({
+  type: 'setRuntimeMax',
+  payload,
+});
 export {
   setOnSort,
   setSort,
@@ -60,4 +84,10 @@ export {
   setDateTo,
   setGenres,
   toggleGenre,
+  setVoteMin,
+  setVoteMax,
+  setUserVoteMin,
+  setUserVoteMax,
+  setRuntimeMin,
+  setRuntimeMax,
 };
